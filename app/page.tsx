@@ -227,8 +227,8 @@ export default function Page() {
           <h1 className="text-2xl font-bold">Swiss Badminton Doubles · Individual Leaderboard</h1>
         </header>
 
-        {/* Mobile-first stepper view (disabled, using original layout) */}
-        <div className="hidden">
+        {/* Mobile-first stepper view (enabled on small screens) */}
+        <div className="block lg:hidden">
           <nav className="bg-white rounded-2xl p-2 shadow-sm border">
             <div className="flex gap-2 overflow-x-auto">
               {steps.map((s, i) => (
@@ -301,7 +301,8 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-4">
+        {/* Desktop/large layout */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-4">
           <section className="bg-white rounded-2xl p-4 shadow-sm">
             <h2 className="font-semibold mb-2">Players</h2>
             <PlayersPanel players={players} addPlayer={addPlayer} removePlayer={removePlayer} />
@@ -333,12 +334,12 @@ export default function Page() {
           </section>
         </div>
 
-        <section className="bg-white rounded-2xl p-4 shadow-sm">
+        <section className="hidden lg:block bg-white rounded-2xl p-4 shadow-sm">
           <h2 className="font-semibold mb-3">Matches</h2>
           <MatchesTable matches={matches} id2player={id2player} setSetScore={setSetScore} setCourt={setCourt} />
         </section>
 
-        <div className="grid lg:grid-cols-2 gap-4">
+        <div className="hidden lg:grid lg:grid-cols-2 gap-4">
           <section className="bg-white rounded-2xl p-4 shadow-sm">
             <h2 className="font-semibold mb-3">Stats (Individual)</h2>
             <StatsTable stats={stats} />
