@@ -15,11 +15,11 @@ function uid() {
 const DEFAULT_PLAYERS: Player[] = [];
 
 const DEFAULT_CONFIG: ConfigWeights = {
-  WIN_BONUS: 3,
+  WIN_BONUS: 2,
   SET_WON_WEIGHT: 1,
   POINT_DIFF_WEIGHT: 0.05,
-  RUBBER_WIN_BONUS: 1,
-  STRAIGHT_WIN_BONUS: 0.5,
+  RUBBER_WIN_BONUS: 0,
+  STRAIGHT_WIN_BONUS: 0,
   LOSS_PARTICIPATION: 0,
 };
 
@@ -123,10 +123,11 @@ export default function Page() {
     const pointsA = s[0].a + s[1].a + s[2].a;
     const pointsB = s[0].b + s[1].b + s[2].b;
     const winner = setsWonA === 0 && setsWonB === 0 ? "" : setsWonA > setsWonB ? "A" : setsWonB > setsWonA ? "B" : "";
-    const isStraightA = winner === "A" && setsWonA === 2 ? 1 : 0;
-    const isStraightB = winner === "B" && setsWonB === 2 ? 1 : 0;
-    const isRubberA = winner === "A" && setsWonA === 2 && !isStraightA && (s[2].a > 0 || s[2].b > 0) ? 1 : 0;
-    const isRubberB = winner === "B" && setsWonB === 2 && !isStraightB && (s[2].a > 0 || s[2].b > 0) ? 1 : 0;
+    const thirdPlayed = s[2].a > 0 || s[2].b > 0;
+    const isStraightA = winner === "A" && setsWonA === 2 && !thirdPlayed ? 1 : 0; // 2-0
+    const isStraightB = winner === "B" && setsWonB === 2 && !thirdPlayed ? 1 : 0; // 2-0
+    const isRubberA = winner === "A" && setsWonA === 2 && thirdPlayed ? 1 : 0; // 2-1
+    const isRubberB = winner === "B" && setsWonB === 2 && thirdPlayed ? 1 : 0; // 2-1
     return { setsWonA, setsWonB, pointsA, pointsB, pointDiffA: pointsA - pointsB, pointDiffB: pointsB - pointsA, winner, isStraightA, isStraightB, isRubberA, isRubberB };
   }
 
@@ -223,16 +224,16 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
       <div className="max-w-7xl mx-auto grid gap-6">
-        <header className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Swiss Badminton Doubles · Individual Leaderboard</h1>
+        <header className="flex items-center justify-between min-w-0">
+          <h1 className="text-2xl font-bold break-words">Swiss Badminton Doubles · Individual Leaderboard</h1>
         </header>
 
         {/* Mobile-first stepper view (enabled on small screens) */}
         <div className="block lg:hidden">
           <nav className="bg-white rounded-2xl p-2 shadow-sm border">
-            <div className="flex gap-2 overflow-x-auto">
+            <div className="grid grid-cols-3 gap-2">
               {steps.map((s, i) => (
-                <button key={s.key} onClick={() => setStep(i)} className={clsx("whitespace-nowrap text-sm px-3 py-1.5 rounded-full border", i === step ? "bg-black text-white border-black" : "bg-white text-gray-700")}>{`${i + 1}. ${
+                <button key={s.key} onClick={() => setStep(i)} className={clsx("text-xs text-center px-3 py-1.5 rounded-full border", i === step ? "bg-black text-white border-black" : "bg-white text-gray-700")}>{`${i + 1}. ${
                   s.title
                 }`}</button>
               ))}
@@ -249,7 +250,7 @@ export default function Page() {
             <section className="bg-white rounded-2xl p-4 shadow-sm">
               <h2 className="font-semibold mb-2">Config Weights</h2>
               <ConfigPanel config={config} setConfig={setConfig} />
-              <div className="mt-3 flex items-center gap-3">
+              <div className="mt-3 flex flex-wrap items-center gap-3">
                 <label className="text-sm">Courts</label>
                 <input type="number" min={1} value={courts} onChange={(e) => setCourts(Number(e.target.value) || 1)} className="w-24 px-3 py-2 rounded-xl border" />
               </div>
@@ -262,9 +263,9 @@ export default function Page() {
                 <button onClick={genRound1} className="px-3 py-2 rounded-2xl bg-black text-white disabled:opacity-50" disabled={players.length < 4}>
                   Generate Round 1 (Shuffle)
                 </button>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <input type="number" min={2} value={currentRound} onChange={(e) => setCurrentRound(Number(e.target.value) || 1)} className="w-24 px-3 py-2 rounded-xl border" />
-                  <button onClick={() => acceptSwissAsRound(currentRound)} className="px-3 py-2 rounded-2xl border bg-white hover:shadow disabled:opacity-50" disabled={players.length < 4}>
+                  <button onClick={() => acceptSwissAsRound(currentRound)} className="w-full sm:w-auto px-3 py-2 rounded-2xl border bg-white hover:shadow disabled:opacity-50" disabled={players.length < 4}>
                     Accept Swiss Pairs as Round {currentRound}
                   </button>
                 </div>
@@ -311,7 +312,7 @@ export default function Page() {
           <section className="bg-white rounded-2xl p-4 shadow-sm">
             <h2 className="font-semibold mb-2">Config Weights</h2>
             <ConfigPanel config={config} setConfig={setConfig} />
-            <div className="mt-3 flex items-center gap-3">
+            <div className="mt-3 flex flex-wrap items-center gap-3">
               <label className="text-sm">Courts</label>
               <input type="number" min={1} value={courts} onChange={(e) => setCourts(Number(e.target.value) || 1)} className="w-20 px-3 py-2 rounded-xl border" />
             </div>
@@ -323,9 +324,9 @@ export default function Page() {
               <button onClick={genRound1} className="px-3 py-2 rounded-2xl bg-black text-white hover:opacity-90">
                 Generate Round 1 (Shuffle)
               </button>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
                 <input type="number" min={2} value={currentRound} onChange={(e) => setCurrentRound(Number(e.target.value) || 1)} className="w-24 px-3 py-2 rounded-xl border" />
-                <button onClick={() => acceptSwissAsRound(currentRound)} className="px-3 py-2 rounded-2xl border bg-white hover:shadow">
+                <button onClick={() => acceptSwissAsRound(currentRound)} className="w-full sm:w-auto px-3 py-2 rounded-2xl border bg-white hover:shadow">
                   Accept Swiss Pairs as Round {currentRound}
                 </button>
               </div>

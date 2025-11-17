@@ -6,8 +6,11 @@
 /* Ensure consistent box sizing */
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Mobile-friendly baseline and prevent horizontal page scroll */
-html, body { background: var(--bg); width: 100%; max-width: 100vw; overflow-x: hidden; }
+/* Mobile-friendly baseline (avoid page-level clipping) */
+html, body { background: var(--bg); width: 100%; }
+
+/* Help long text/labels wrap instead of overflowing */
+:where(h1,h2,h3,h4,h5,h6,p,span,button,label,th,td,div) { overflow-wrap: anywhere; word-break: break-word; }
 
 /* Media defaults */
 img, video, canvas, svg { max-width: 100%; height: auto; }

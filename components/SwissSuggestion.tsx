@@ -6,7 +6,7 @@ function Team({label,a,b}:{label:string,a?:string,b?:string}){
   return (
     <div className='px-2 py-1 rounded-lg bg-gray-50 border'>
       <div className='text-[10px] uppercase tracking-wide text-gray-500'>{label}</div>
-      <div className='font-medium'>{a} &nbsp;&&nbsp; {b}</div>
+      <div className='font-medium break-words'>{a} &amp; {b}</div>
     </div>
   )
 }

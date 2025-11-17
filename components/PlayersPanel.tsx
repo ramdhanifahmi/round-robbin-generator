@@ -15,7 +15,7 @@ export default function PlayersPanel({players, addPlayer, removePlayer}:{
         <input value={name} onChange={e=>setName(e.target.value)} placeholder='Add player name' className='flex-1 px-3 py-2 rounded-xl border'/>
         <Button onClick={()=>{addPlayer(name); setName('')}}>Add</Button>
       </div>
-      <ul className='grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-auto pr-1'>
+      <ul className='grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1'>
         {players.map(p=> (
           <li key={p.id} className='flex items-center justify-between px-3 py-2 rounded-xl border'>
             <span className='truncate'>{p.name}</span>
