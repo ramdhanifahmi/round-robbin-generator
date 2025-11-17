@@ -20,8 +20,6 @@ export default function StatsTable({stats}:{stats: StatRow[]}){
               <div className='flex justify-between'><span className='text-gray-500'>Sets</span><span>{s.SW}-{s.SL}</span></div>
               <div className='flex justify-between'><span className='text-gray-500'>Pts</span><span>{s.PW}-{s.PL}</span></div>
               <div className='flex justify-between'><span className='text-gray-500'>PD</span><span>{s.PD}</span></div>
-              <div className='flex justify-between'><span className='text-gray-500'>Rub</span><span>{s.RW}</span></div>
-              <div className='flex justify-between'><span className='text-gray-500'>StW</span><span>{s.STW}</span></div>
             </div>
           </div>
         ))}
@@ -40,8 +38,6 @@ export default function StatsTable({stats}:{stats: StatRow[]}){
               <th className='p-2'>Sets</th>
               <th className='p-2'>Pts</th>
               <th className='p-2'>PD</th>
-              <th className='p-2'>Rub</th>
-              <th className='p-2'>StW</th>
               <th className='p-2'>SwissScore</th>
             </tr>
           </thead>
@@ -56,8 +52,6 @@ export default function StatsTable({stats}:{stats: StatRow[]}){
                 <td className='p-2'>{s.SW}-{s.SL}</td>
                 <td className='p-2'>{s.PW}-{s.PL}</td>
                 <td className='p-2'>{s.PD}</td>
-                <td className='p-2'>{s.RW}</td>
-                <td className='p-2'>{s.STW}</td>
                 <td className='p-2 font-semibold'>{s.score.toFixed(2)}</td>
               </tr>
             ))}

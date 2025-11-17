@@ -5,14 +5,12 @@ export type Match = {
   court?: number | string
   teamA: [string, string]
   teamB: [string, string]
-  sets: { a: number; b: number }[]
+  sets: { a: number | ''; b: number | '' }[]
 }
 export type ConfigWeights = {
   WIN_BONUS: number
   SET_WON_WEIGHT: number
   POINT_DIFF_WEIGHT: number
-  RUBBER_WIN_BONUS: number
-  STRAIGHT_WIN_BONUS: number
   LOSS_PARTICIPATION: number
 }
 export type StatRow = {
@@ -26,7 +24,5 @@ export type StatRow = {
   PW: number
   PL: number
   PD: number
-  RW: number
-  STW: number
   score: number
 }

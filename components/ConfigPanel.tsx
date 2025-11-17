@@ -10,8 +10,6 @@ export default function ConfigPanel({config, setConfig}:{config: ConfigWeights, 
     ['WIN_BONUS','Win Bonus'],
     ['SET_WON_WEIGHT','Per Set Won'],
     ['POINT_DIFF_WEIGHT','Point Diff Weight'],
-    ['RUBBER_WIN_BONUS','Rubber Win Bonus'],
-    ['STRAIGHT_WIN_BONUS','Straight Win Bonus'],
     ['LOSS_PARTICIPATION','Loss Participation'],
   ]
   return (
