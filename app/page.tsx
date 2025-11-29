@@ -68,6 +68,7 @@ export default function Page() {
   }
   function removePlayer(id: string) {
     setPlayers((ps) => ps.filter((p) => p.id !== id));
+    setMatches((ms) => ms.filter((m) => !m.teamA.includes(id) && !m.teamB.includes(id)));
   }
   function shuffle<T>(arr: T[]): T[] {
     const a = [...arr];
