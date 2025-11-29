@@ -6,6 +6,7 @@ import PlayersPanel from "../components/PlayersPanel";
 import ConfigPanel from "../components/ConfigPanel";
 import MatchesTable from "../components/MatchesTable";
 import StatsTable from "../components/StatsTable";
+import CustomPairingForm from "../components/CustomPairingForm";
 // import SwissSuggestion from "../components/SwissSuggestion";
 
 function uid() {
@@ -68,6 +69,7 @@ export default function Page() {
   }
   function removePlayer(id: string) {
     setPlayers((ps) => ps.filter((p) => p.id !== id));
+    setMatches((ms) => ms.filter((m) => !m.teamA.includes(id) && !m.teamB.includes(id)));
   }
   function shuffle<T>(arr: T[]): T[] {
     const a = [...arr];
@@ -187,6 +189,29 @@ export default function Page() {
     setCurrentRound(1);
   }
 
+  function addCustomMatch(payload: { round: number; court?: number | ""; teamA: [string, string]; teamB: [string, string] }) {
+    setMatches((ms) => {
+      const roundCourts = ms.filter((m) => m.round === payload.round && typeof m.court === "number").map((m) => m.court as number);
+      const nextCourt = roundCourts.length ? Math.max(...roundCourts) + 1 : 1;
+      return [
+        ...ms,
+        {
+          id: uid(),
+          round: payload.round,
+          court: payload.court ?? nextCourt,
+          teamA: payload.teamA,
+          teamB: payload.teamB,
+          sets: [
+            { a: "", b: "" },
+            { a: "", b: "" },
+            { a: "", b: "" },
+          ],
+        },
+      ];
+    });
+    setCurrentRound(payload.round);
+  }
+
   function generateSwissRound(round: number) {
     const newMatches: Match[] = swissPairs.map((pr, idx) => ({
       id: uid(),
@@ -259,6 +284,9 @@ export default function Page() {
           {step === 2 && (
             <section className="bg-white rounded-2xl p-4 shadow-sm">
               <h2 className="font-semibold mb-3">Matches</h2>
+              <div className="mb-4">
+                <CustomPairingForm players={players} onAdd={addCustomMatch} />
+              </div>
               <MatchesTable matches={matches} id2player={id2player} setSetScore={setSetScore} setCourt={setCourt} />
             </section>
           )}
@@ -298,6 +326,9 @@ export default function Page() {
 
         <section className="hidden lg:block bg-white rounded-2xl p-4 shadow-sm">
           <h2 className="font-semibold mb-3">Matches</h2>
+          <div className="mb-4">
+            <CustomPairingForm players={players} onAdd={addCustomMatch} />
+          </div>
           <MatchesTable matches={matches} id2player={id2player} setSetScore={setSetScore} setCourt={setCourt} />
         </section>
 
