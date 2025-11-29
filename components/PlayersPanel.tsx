@@ -11,9 +11,9 @@ export default function PlayersPanel({players, addPlayer, removePlayer}:{
   const [name, setName] = useState('')
   return (
     <div>
-      <div className='flex gap-2 mb-3'>
-        <input value={name} onChange={e=>setName(e.target.value)} placeholder='Add player name' className='flex-1 px-3 py-2 rounded-xl border'/>
-        <Button onClick={()=>{addPlayer(name); setName('')}}>Add</Button>
+      <div className='flex flex-col sm:flex-row gap-2 mb-3'>
+        <input value={name} onChange={e=>setName(e.target.value)} placeholder='Add player name' className='flex-1 min-w-0 px-3 py-2 rounded-xl border'/>
+        <Button className='w-full sm:w-auto' onClick={()=>{addPlayer(name); setName('')}}>Add</Button>
       </div>
       <ul className='grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1'>
         {players.map(p=> (
